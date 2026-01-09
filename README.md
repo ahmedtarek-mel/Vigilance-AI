@@ -2,6 +2,9 @@
 
 # 🛡️ Vigilance AI
 ### Intelligent Driver Drowsiness Detection System
+<img src="assets/vigilance_ai.png" alt="Vigilance AI Project Thumbnail" width="100%">
+
+<br>
 
 [![Live Demo](https://img.shields.io/badge/🚀_TRY_LIVE_DEMO-4F46E5?style=for-the-badge&logoColor=white)](https://ahmedtarek-mel.github.io/Vigilance-AI/web)
 [![Python](https://img.shields.io/badge/Python-3.8+-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
