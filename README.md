@@ -21,8 +21,9 @@
 ## 🎬 Demo
 
 <div align="center">
-  <!-- GitHub supports video playback for mp4 -->
   <video src="demo/Demo.mp4" width="100%" controls></video>
+  <br>
+  <a href="demo/Demo.mp4"><strong>🎥 Click here if video doesn't play</strong></a>
   <p><em>Real-time detection of eye closure (Blinks) and mouth opening (Yawns)</em></p>
 </div>
 
@@ -56,7 +57,7 @@
 ### 🌐 Web Version (Recommended)
 No installation needed! Runs directly in your browser.
 
-1.  **[Click Here to Open](https://ahmedtarek-mel.github.io/Driver-Drowsiness-Detection/web)**
+1.  **[Click Here to Open](https://ahmedtarek-mel.github.io/Vigilance-AI/web)**
 2.  Allow camera access.
 3.  Start driving!
 
@@ -64,8 +65,8 @@ No installation needed! Runs directly in your browser.
 
 ```bash
 # Clone the repository
-git clone https://github.com/ahmedtarek-mel/Driver-Drowsiness-Detection.git
-cd Driver-Drowsiness-Detection
+git clone https://github.com/ahmedtarek-mel/Vigilance-AI.git
+cd Vigilance-AI
 
 # Install dependencies
 pip install -r requirements.txt
@@ -120,17 +121,26 @@ A "Perclos-like" temporal analysis filters out normal blinks. Alerts are only tr
 ##  Project Structure
 
 ```
-Driver-Drowsiness-Detection/
-├── web/                   # 🌐 TensorFlow.js Application
-│   ├── index.html
-│   ├── style.css
-│   └── app.js
-├── src/                   # 🐍 Python Core Logic
-│   ├── detection/         # Face & Eye algorithms
-│   └── core/              # Video stream handling
+Vigilance-AI/
+├── web/                   # TensorFlow.js Application (GitHub Pages)
+│   ├── index.html         # Main App Interface
+│   ├── style.css          # Responsive Modern UI
+│   ├── app.js             # Core Logic (Detection & UI)
+│   └── presets.js         # Base64 Video Presets
+├── src/                   # Python Core Logic
+│   ├── core/              # Detector, Alert System, Config
+│   ├── detection/         # Face, Eye, Yawn, Head Pose Algorithms
+│   └── utils/             # Visualization & Image Helpers
+├── assets/                # Sounds & Images
+├── demo/                  # Demo Videos
+├── models/                # ML Models (dlib landmarks)
+├── tests/                 # Unit Tests
 ├── config.yaml            # System Configuration
 ├── main.py                # Python Entry Point
-└── requirements.txt       # Dependencies
+├── camera_diagnostic.py   # Debug Camera Issues
+├── start_local_test.bat   # Quick Local Web Server Script
+├── requirements.txt       # Dependencies
+└── README.md              # Documentation
 ```
 
 ---
@@ -141,7 +151,7 @@ Driver-Drowsiness-Detection/
 
 **Ahmed Tarek**
 
-*Computer Vision & AI Engineer*
+*Data Scientist & Machine Learning Engineer*
 
 [![GitHub](https://img.shields.io/badge/GitHub-ahmedtarek--mel-181717?style=flat-square&logo=github)](https://github.com/ahmedtarek-mel)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Ahmed_Tarek-0A66C2?style=flat-square&logo=linkedin)](https://linkedin.com/in/ahmed-tarek-mel)
