@@ -21,9 +21,9 @@
 ## 🎬 Demo
 
 <div align="center">
-  <video src="demo/Demo.mp4" width="100%" controls></video>
+  <video src="demo/Demo.webp" width="100%" controls></video>
   <br>
-  <a href="demo/Demo.mp4"><strong>🎥 Click here if video doesn't play</strong></a>
+  <a href="demo/Demo.webp"><strong>🎥 Click here if video doesn't play</strong></a>
   <p><em>Real-time detection of eye closure (Blinks) and mouth opening (Yawns)</em></p>
 </div>
 
