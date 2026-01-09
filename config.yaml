@@ -1,0 +1,61 @@
+# Configuration for Driver Drowsiness Detection System
+
+detection:
+  # Eye Aspect Ratio threshold (below this = eyes closed)
+  ear_threshold: 0.25
+  
+  # Mouth Aspect Ratio threshold (above this = yawning)
+  mar_threshold: 0.75
+  
+  # Time in seconds of closed eyes before drowsiness alert
+  drowsy_time_seconds: 2.0
+  
+  # Minimum blink duration in milliseconds
+  blink_time_ms: 100
+  
+  # Number of consecutive yawns to trigger alert
+  yawn_consecutive_threshold: 3
+  
+  # Head pose angle threshold (degrees)
+  head_pose_threshold: 30
+
+camera:
+  # Camera device ID (0 = default webcam)
+  device_id: 0
+  
+  # Resolution
+  width: 640
+  height: 480
+  
+  # Target FPS
+  fps: 30
+  
+  # Face detection downsample ratio for performance
+  face_downsample_ratio: 1.5
+
+alerts:
+  # Enable sound alerts
+  sound_enabled: true
+  
+  # Path to alarm sound file (also checks assets/alarm.wav as fallback)
+  sound_file: "assets/alarm.wav"
+  
+  # Enable visual alerts (red overlay)
+  visual_enabled: true
+  
+  # Alert cooldown in seconds (prevent spam)
+  cooldown_seconds: 3.0
+
+model:
+  # Path to facial landmarks model
+  face_landmarks: "models/shape_predictor_68_face_landmarks.dat"
+  
+  # Download URL for model
+  download_url: "http://dlib.net/files/shape_predictor_68_face_landmarks.dat.bz2"
+
+logging:
+  # Log level: DEBUG, INFO, WARNING, ERROR
+  level: INFO
+  
+  # Log file path (null for console only)
+  file: null

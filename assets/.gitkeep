@@ -1,0 +1,9 @@
+# Placeholder for alarm sound file
+
+# The system expects an alarm.wav file here for audio alerts.
+# You can use any .wav file, or the system will fall back to system beeps.
+
+# To create an alarm:
+# 1. Use any free alarm sound (ensure proper licensing)
+# 2. Convert to WAV: ffmpeg -i alarm.mp3 alarm.wav
+# 3. Place the file in this folder as alarm.wav

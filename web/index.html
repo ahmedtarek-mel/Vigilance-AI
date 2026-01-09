@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vigilance AI | Driver Safety System</title>
+    <meta name="description"
+        content="Real-time driver drowsiness detection using AI. Monitors eye closure, yawning, and head position to prevent accidents.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- TensorFlow.js (Latest) -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@latest/face_mesh.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/@tensorflow-models/face-landmarks-detection@latest/dist/face-landmarks-detection.min.js"></script>
+
+    <!-- Chart.js for real-time graphs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css?v=2">
+</head>
+
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <h2>Loading AI Model...</h2>
+            <p class="loading-status">Initializing TensorFlow.js</p>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="app" class="app hidden">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-shield-halved"></i>
+                <span>Vigilance AI</span>
+            </div>
+            <div class="header-actions">
+                <button id="theme-toggle" class="btn-icon" title="Toggle Theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <a href="https://github.com/ahmedtarek-mel/" target="_blank" class="btn-icon" title="View on GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+            </div>
+        </header>
+
+        <!-- Alert Banner -->
+        <div id="alert-banner" class="alert-banner hidden">
+            <div class="alert-content">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>DROWSINESS DETECTED! Please take a break.</span>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Left Panel: Video Feed -->
+            <section class="video-section">
+                <div class="video-container">
+                    <video id="video" playsinline crossorigin="anonymous"></video>
+                    <canvas id="overlay"></canvas>
+
+                    <!-- Status Badges -->
+                    <div class="video-badges">
+                        <span id="fps-badge" class="badge">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>-- FPS</span>
+                        </span>
+                        <span id="status-badge" class="badge badge-success">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Active</span>
+                        </span>
+                    </div>
+
+                    <!-- Camera Controls -->
+                    <div class="video-controls">
+                        <button id="start-btn" class="btn btn-primary">
+                            <i class="fas fa-play"></i>
+                            Start Detection
+                        </button>
+                        <button id="stop-btn" class="btn btn-secondary hidden">
+                            <i class="fas fa-stop"></i>
+                            Stop
+                        </button>
+                        <button id="sound-btn" class="btn-icon" title="Toggle Sound">
+                            <i class="fas fa-volume-up"></i>
+                        </button>
+
+                        <button id="test1-btn" class="btn-icon" title="Load Test Video 1"
+                            style="width: auto; padding: 0 10px; font-weight: bold; font-size: 14px;">Test 1</button>
+                        <button id="test2-btn" class="btn-icon" title="Load Test Video 2"
+                            style="width: auto; padding: 0 10px; font-weight: bold; font-size: 14px;">Test 2</button>
+
+                        <button id="upload-btn" class="btn-icon" title="Upload Video">
+                            <i class="fas fa-film"></i>
+                        </button>
+                        <input type="file" id="video-upload" accept="video/*" class="hidden">
+                    </div>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="quick-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon eye-icon">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Eye Aspect Ratio</span>
+                            <span id="ear-value" class="stat-value">0.00</span>
+                        </div>
+                        <div class="stat-bar">
+                            <div id="ear-bar" class="stat-bar-fill" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon mouth-icon">
+                            <i class="fas fa-comment-dots"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Mouth Aspect Ratio</span>
+                            <span id="mar-value" class="stat-value">0.00</span>
+                        </div>
+                        <div class="stat-bar">
+                            <div id="mar-bar" class="stat-bar-fill mar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right Panel: Dashboard -->
+            <section class="dashboard-section">
+                <!-- Drowsiness Score -->
+                <div class="score-card">
+                    <h3>Drowsiness Level</h3>
+                    <div class="score-display">
+                        <div class="score-circle">
+                            <svg viewBox="0 0 100 100">
+                                <circle class="score-bg" cx="50" cy="50" r="45"></circle>
+                                <circle id="score-progress" class="score-fill" cx="50" cy="50" r="45"></circle>
+                            </svg>
+                            <div class="score-text">
+                                <span id="score-value">0</span>
+                                <span class="score-unit">%</span>
+                            </div>
+                        </div>
+                        <div class="score-status">
+                            <span id="score-label" class="status-label status-good">Alert</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Counters -->
+                <div class="counters-grid">
+                    <div class="counter-card">
+                        <i class="fas fa-eye-slash"></i>
+                        <div class="counter-info">
+                            <span id="blink-count" class="counter-value">0</span>
+                            <span class="counter-label">Blinks</span>
+                        </div>
+                    </div>
+                    <div class="counter-card">
+                        <i class="fas fa-tired"></i>
+                        <div class="counter-info">
+                            <span id="yawn-count" class="counter-value">0</span>
+                            <span class="counter-label">Yawns</span>
+                        </div>
+                    </div>
+                    <div class="counter-card">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <div class="counter-info">
+                            <span id="alert-count" class="counter-value">0</span>
+                            <span class="counter-label">Alerts</span>
+                        </div>
+                    </div>
+                    <div class="counter-card">
+                        <i class="fas fa-clock"></i>
+                        <div class="counter-info">
+                            <span id="session-time" class="counter-value">00:00</span>
+                            <span class="counter-label">Session</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts -->
+                <div class="chart-card">
+                    <h4>Real-time Monitoring</h4>
+                    <div class="chart-container">
+                        <canvas id="metrics-chart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Settings Panel -->
+                <div class="settings-card">
+                    <h4><i class="fas fa-cog"></i> Settings</h4>
+                    <div class="settings-grid">
+                        <div class="setting-item">
+                            <label for="ear-threshold">EAR Threshold</label>
+                            <input type="range" id="ear-threshold" min="0.15" max="0.35" step="0.01" value="0.25">
+                            <span id="ear-threshold-value">0.25</span>
+                        </div>
+                        <div class="setting-item">
+                            <label for="mar-threshold">MAR Threshold</label>
+                            <input type="range" id="mar-threshold" min="0.5" max="1.0" step="0.05" value="0.75">
+                            <span id="mar-threshold-value">0.75</span>
+                        </div>
+                        <div class="setting-item">
+                            <label for="drowsy-time">Alert Delay (s)</label>
+                            <input type="range" id="drowsy-time" min="1" max="5" step="0.5" value="2">
+                            <span id="drowsy-time-value">2.0</span>
+                        </div>
+                    </div>
+                </div>
+
+    </div>
+    </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2026 Developed by <strong>Ahmed Tarek</strong><br>All Rights Reserved.</p>
+    </footer>
+    </div>
+
+    <!-- Audio Alert -->
+    <audio id="alert-sound" loop>
+        <source src="assets/alert.wav" type="audio/wav">
+        <source src="../alarm.wav" type="audio/wav">
+    </audio>
+
+    <!-- Main Scripts -->
+    <script src="presets.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>

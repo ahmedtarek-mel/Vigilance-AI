@@ -1,0 +1,6 @@
+# Placeholder for dlib facial landmark model
+# This file will be downloaded automatically on first run
+
+# To manually download:
+# 1. Download from: http://dlib.net/files/shape_predictor_68_face_landmarks.dat.bz2
+# 2. Extract and place shape_predictor_68_face_landmarks.dat in this folder

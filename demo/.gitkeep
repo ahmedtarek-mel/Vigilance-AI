@@ -1,0 +1,9 @@
+# Placeholder for demo assets
+
+# This folder should contain:
+# - demo.gif: Animated GIF showing the system in action
+# - sample_video.mp4: Sample video for testing
+
+# To create demo.gif:
+# 1. Run the system: python main.py --record demo_output.avi
+# 2. Convert to GIF: ffmpeg -i demo_output.avi -vf "fps=10,scale=640:-1" demo.gif

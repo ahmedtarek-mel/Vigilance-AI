@@ -1,0 +1,31 @@
+# Driver Drowsiness Detection System - Requirements
+# Python 3.8+ required
+
+# Core dependencies
+numpy>=1.21.0
+scipy>=1.7.0
+opencv-python>=4.5.0
+
+# Face detection and landmarks
+dlib>=19.22.0
+# Note: dlib requires cmake and visual studio build tools on Windows
+# Install with: pip install cmake && pip install dlib
+
+# Configuration
+PyYAML>=6.0
+
+# Audio (optional - for sound alerts)
+pygame>=2.1.0
+
+# Web interface (optional - for Streamlit app)
+streamlit>=1.20.0
+plotly>=5.0.0
+
+# Development tools (optional)
+pytest>=7.0.0
+pytest-cov>=4.0.0
+ruff>=0.1.0
+mypy>=1.0.0
+
+# Type stubs
+types-PyYAML>=6.0.0
