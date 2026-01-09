@@ -21,10 +21,8 @@
 ## 🎬 Demo
 
 <div align="center">
-  <video src="demo/Demo.webp" width="100%" controls></video>
-  <br>
-  <a href="demo/Demo.webp"><strong>🎥 Click here if video doesn't play</strong></a>
-  <p><em>Real-time detection of eye closure (Blinks) and mouth opening (Yawns)</em></p>
+  <img src="demo/Demo.webp" alt="Vigilance AI Demo" width="100%">
+  <p><em>Real-time detection: Face Mesh → Eye Closure (Blinks) → Yawn Alerts</em></p>
 </div>
 
 ---
